@@ -1,10 +1,12 @@
 ---
-title: "Housing"
+  title: "Housing"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+View(dataSet)
 ```
 
 ## R Markdown
