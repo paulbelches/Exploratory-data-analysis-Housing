@@ -1,32 +1,482 @@
 ---
-title: "Housing"
-output:
-  pdf_document: default
-  html_document: default
+title "Housing"
+output
+  pdf_document default
+  html_document default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
-View(dataSet)
-```
+##Clasifición de las variables
 
-## R Markdown
+# MSSubClass
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Identifica el tipo de vivienda involucrada en la venta. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Variable categórica nominal
 
-```{r cars}
-summary(cars)
-```
+# MSZoning
 
-## Including Plots
+Identifica la clasificación general de la zona de venta
 
-You can also embed plots, for example:
+Variable categórica nominal
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+# LotFrontage
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Cantidad de pies de la propiedad conectados a la calle
+
+Variable cuantitativa continua
+
+# LotArea
+
+Tamaño del lote en pies cuadrados
+
+Variable cuantitativa continua
+
+# Street
+
+Tipo del camino de acceso a la propiedad 
+
+Variable categórica nominal
+       	
+# Alley
+
+Tipo del callejón de acceso a la propiedad 
+
+Variable categórica nominal
+		
+# LotShape
+
+Forma general de la propiedad
+
+Variable categórica nominal
+       
+# LandContour
+
+Horizontalidad de la propiedad
+
+Variable categórica ordinal
+		
+# Utilities
+
+Tipo de utilidades disponibles
+
+Variable categórica nominal
+	
+# LotConfig
+
+Configuración del lote
+
+Variable categórica nominal
+	
+# LandSlope
+
+Pendiente de la propiedad
+
+Variable categórica ordinal
+	
+# Neighborhood
+
+Ubicación dentro de  la ciudad de Ames 
+
+Variable categórica nominal
+			
+# Condition1
+
+Proximidad a condiciones varias 
+
+Variable categórica nominal
+	
+# Condition2
+
+Proximidad a condiciones varias (si existe más de una presente)
+
+Variable categórica nominal
+	
+# BldgType
+
+Tipo de vivienda
+
+Variable categórica nominal
+	
+# HouseStyle
+
+Estilo de vivienda
+
+Variable categórica nominal
+
+# OverallQual
+
+Calificación promedio de los materiales y acabados de la casa
+
+Variable categórica ordinal
+	
+# OverallCond
+
+Calificación promedio de la condición de la casa
+
+Variable categórica ordinal
+		
+# YearBuilt
+
+Fecha original de construcción 
+
+Variable categórica ordinal
+
+# YearRemodAdd
+
+Fecha de remodelación (misma que en construcción en caso no se hayan efectuado adiciones o remodelaciones) 
+
+Variable categórica ordinal
+
+# RoofStyle
+
+Tipo de techo
+
+Variable categórica nominal
+
+# RoofMatl
+
+Material del techo
+
+Variable categórica nominal
+	
+# Exterior1st
+
+Revestimiento de la casa
+
+Variable categórica nominal
+	
+# Exterior2nd
+
+Revestimiento de la casa (en caso exista más de uno)
+
+Variable categórica nominal
+	
+# MasVnrType
+
+Tipo de mampostería 
+
+Variable categórica nominal
+	
+# MasVnrArea
+
+Área de mampostería en pies cuadrados
+
+Masonry veneer area in square feet
+
+# ExterQual
+
+Evaluación de la calidad de los materiales del exterior
+
+Variable categórica ordinal
+		
+# ExterCond
+
+Evaluación de la condición presente de los materiales del exterior
+
+Variable categórica ordinal
+		
+# Foundation
+
+Tipo de cimentación
+
+Variable categórica nominal
+		
+# BsmtQual
+
+Evaluación de la altura del sótano 
+
+Variable categórica ordinal
+		
+# BsmtCond
+
+Evaluación general de la condición del sótano 
+
+Variable categórica ordinal
+	
+# BsmtExposure
+
+Evaluación de la pared perimetral
+
+Variable categórica ordinal
+	
+# BsmtFinType1
+
+Rating of basement finished area
+
+Variable categórica ordinal
+		
+# BsmtFinSF1
+
+Acabados de tipo 1 en pies cuadrados
+
+Variable cuantitativa continua
+
+# BsmtFinType2
+
+Calificación de los acabados del sotano (si existe varios)
+
+Variable categórica ordinal
+
+# BsmtFinSF2
+
+Acabados de tipo 2 en pies cuadrados
+
+Variable cuantitativa continua
+
+# BsmtUnfSF
+
+Pies cuadrados sin terminar en el área del sótano
+
+Variable cuantitativa continua
+
+# TotalBsmtSF
+
+Cantidad total de pies cuadrados en el área del sótano
+
+Variable cuantitativa continua
+
+# Heating
+
+Tipo de calefacción
+
+Variable categórica nominal
+		
+# HeatingQC
+
+Calidad y condición de la calefacción
+
+Variable categórica ordinal
+		
+# CentralAir 
+
+Aire acondicionado central
+
+Variable categórica nominal
+
+# Electrical
+
+Sistema eléctrico
+
+Variable categórica nominal
+		
+# 1stFlrSF
+
+Pies cuadrados del primer piso
+
+Variable cuantitativa continua
+ 
+# 2ndFlrSF
+
+Pies cuadrados del segundo piso
+
+Variable cuantitativa continua
+
+# LowQualFinSF
+
+Cantidad de pies cuadrados con acabados de baja calidad
+
+Variable cuantitativa continua
+
+# GrLivArea
+
+Cantidad de pies cuadrados de vivienda sobre la superficie
+
+Variable cuantitativa continua
+
+# BsmtFullBath
+
+Cantidad de baños completos en el sótano
+
+Variable cuantitativa discreta
+
+# BsmtHalfBath
+
+Cantidad de medios baños en el sótano
+
+Variable cuantitativa discreta
+
+# FullBath
+
+Cantidad de baños completos sobre la superficie
+
+Variable cuantitativa discreta
+
+# HalfBath
+
+Cantidad de medios baños sobre la superficie
+
+Variable cuantitativa discreta
+
+# Bedroom
+
+Cantidad de dormitorios sobre la superficie (no incluye dormitorios en el sótano)
+
+Variable cuantitativa discreta
+
+# Kitchen
+
+Cantidad de cocinas sobre la superficie
+
+Kitchens above grade
+
+# KitchenQual
+
+Calidad de la cocina
+
+Variable categórica ordinal
+       	
+# TotRmsAbvGrd
+
+Cantidad de cuartos sobre la superficie (no incluye baños)
+
+Variable cuantitativa discreta
+
+# Functional
+
+Funcionalidad de casas (Se asumen típicas a menos qué la deducción este justificado)
+
+Variable categórica nominal
+
+# Fireplaces
+
+Cantidad de chimeneas
+
+Variable cuantitativa discreta
+
+# FireplaceQu
+
+Calidad de la chimenea
+
+Variable categórica ordinal
+		
+# GarageType
+
+Locación del garaje
+
+Variable categórica nominal
+		
+# GarageYrBlt
+
+Año en que se construyó el garaje
+
+Variable categórica ordinal
+		
+# GarageFinish
+
+Acabados interiores del garaje
+
+Variable categórica ordinal
+		
+# GarageCars
+
+Tamaño del garaje en capacidad de carros
+
+Variable cuantitativa discreta
+
+# GarageArea
+
+Tamaño del garaje en pies cuadrados
+
+Size of garage in square feet
+
+# GarageQual
+
+Calidad del garaje 
+
+Variable categórica ordinal
+		
+# GarageCond
+
+Condiciones del garaje
+
+Variable categórica ordinal
+		
+# PavedDrive
+
+Pavimento de la entrada
+
+Variable categórica nominal
+		
+# WoodDeckSF
+
+Área del deck de madera en pies cuadrados
+
+Variable cuantitativa continua
+
+# OpenPorchSF
+
+Área abierta del porche en pies cuadrados
+
+Variable cuantitativa continua
+
+# EnclosedPorch
+
+Área cerrada del porche en pies cuadrados
+
+Variable cuantitativa continua
+
+# 3SsnPorch
+
+Área de 3 temporadas del porche en pies cuadrados
+
+Variable cuantitativa continua
+
+# ScreenPorch
+
+Área de pantalla del porche en pies cuadrados
+
+Variable cuantitativa continua
+
+# PoolArea
+
+Área de piscina en pies cuadrados
+
+Variable cuantitativa continua
+
+# PoolQC
+
+Calidad de la piscina 
+
+Variable categórica ordinal
+
+# Fence
+
+Calidad de la cerca
+
+Variable categórica ordinal
+	
+# MiscFeature
+
+Otras características no cubiertas en otra categoría 
+
+Variable categórica nominal
+		
+# MiscVal
+
+Valor de las otras características
+
+Variable categórica nominal
+
+# MoSold
+
+Mes en que se vendio
+
+Variable categórica ordinal
+
+# YrSold
+
+Año en que se vendio
+
+Variable categórica ordinal
+
+# SaleType
+
+Tipo de venta
+
+Variable categórica nominal
+	
+# SaleCondition
+
+Condiciones de venta
+
+Variable categórica nominal
