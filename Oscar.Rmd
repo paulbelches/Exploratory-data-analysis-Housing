@@ -1,0 +1,106 @@
+---
+title: "Laboratorio #1"
+author: "Paul Belches, José Cifuentes, Oscar Juárez"
+date: "7/23/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+library(rela)
+library(psych)
+library(FactoMineR)
+library(corrplot)
+library(knitr)
+library(factoextra)
+```
+
+## Análisis de los componentes princpales
+
+Primero, debemos definir solo las variables cuantitativas útiles de nuestro set de datos
+
+```{r}
+datosNumericos <- dataSet[,c("MSSubClass","LotArea","OverallQual","OverallCond","YearBuilt","YearRemodAdd","BsmtFinSF1","BsmtUnfSF","TotalBsmtSF","X2ndFlrSF","LowQualFinSF","GrLivArea","BsmtFullBath","BsmtHalfBath","FullBath","HalfBath","BedroomAbvGr","KitchenAbvGr","TotRmsAbvGrd","Fireplaces","GarageCars","GarageArea","WoodDeckSF","OpenPorchSF","EnclosedPorch","X3SsnPorch","ScreenPorch","PoolArea","MiscVal","MoSold","YrSold")]
+
+datosNumericos[is.na(datosNumericos)] <- 0
+```
+
+
+Ahora analizamos si es posible utilizar el análisis factorial para formar las combinaciones lineales de las variables.
+
+```{r}
+pafDatos<-paf(as.matrix(datosNumericos))
+pafDatos$KMO
+pafDatos$Bartlett
+#summary(pafDatos)
+```
+
+Obtenemos un **KMO** de *0.73*, lo cual significa una aceptable adecuación muestral. Por otra parte, el **Bartlett** es de *21612* lo cual es un valor alto indicando menos probabilidad que la matriz sea una matriz identidad.
+
+
+También debemos validar el **nivel de significación** de la prueba
+
+```{r}
+cortest.bartlett(datosNumericos[,-1])
+```
+
+El valor p es de 0, dado que es mayor a 0.05, el análisis factorial podría no funcionar. Vale la pena mostrar la matriz de correlación.
+
+```{r results = 'hide'}
+cor(datosNumericos[,-1], use = "pairwise.complete.obs")
+```
+
+Del último resultado, cabe destacar los **15 valores con mayor correlación** entre ellos.
+
+VARIABLE 1 | VARIABLE 2 | CORRELACIÓN
+-------|--------|-------		
+GarageCars | GarageArea | 0.882
+TotRmsAbvGrd | GrLivArea | 0.825
+X2ndFlrSF | GrLivArea | 0.687
+BedroomAbvGr | TotRmsAbvGrd | 0.676
+BsmtFullBath | BsmtFinSF1 | 0.649
+FullBath | GrLivArea | 0.63
+TotRmsAbvGrd | X2ndFlrSF | 0.616
+HalfBath | X2ndFlrSF | 0.611
+GarageCars | OverallQual | 0.6
+YearRemodAdd | YearBuilt | 0.593
+YearBuilt | OverallQual | 0.572
+GarageArea | OverallQual | 0.562
+YearRemodAdd | OverallQual | 0.551
+GarageCars | YearBuilt | 0.538
+BedroomAbvGr | GrLivArea | 0.521
+
+Podemos notar una correlación significativa entre la cantidad de carros que caben en un garage, junto con el área de esta. Además, parece haber correlación entre el total de habitaciones en un segundo nivel junto con el GrLivArea.
+
+
+Normalizamos los datos y obtenemos un resúmen de los componentes.
+
+```{r}
+compPrinc<-prcomp(datosNumericos, scale = T)
+summary(compPrinc)
+```
+
+
+Ahora podemos darnos una idea del comportamiento con los siguientes dos gráficos
+```{r}
+compPrincPCA<-PCA(datosNumericos[,-1],ncp=ncol(datosNumericos[,-1]), scale.unit = T)
+
+# summary(compPrincPCA)
+```
+
+
+
+Hacemos plot de los componentes principales.
+```{r}
+fviz_eig(compPrinc, addlabels = TRUE, ylim = c(0, 80))
+```
+
+Ahora, se muestra la calidad de la representación de los componentes respecto a las dos primeras dimensiones.
+```{r}
+# En la siguiente grÃ¡fica se ilustra la calidad de la representaciÃ³n de los componentes en las dos primeras dimensiones.
+fviz_pca_var(compPrinc, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE # Avoid text overlapping
+)
+```

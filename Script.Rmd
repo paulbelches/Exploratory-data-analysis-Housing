@@ -1,6 +1,8 @@
 ---
-  title: "Housing"
-output: html_document
+title: "Housing"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
