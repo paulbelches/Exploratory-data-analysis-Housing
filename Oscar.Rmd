@@ -91,7 +91,7 @@ compPrincPCA<-PCA(datosNumericos[,-1],ncp=ncol(datosNumericos[,-1]), scale.unit 
 
 
 
-Hacemos plot de los componentes principales.
+Hacemos scree plot de los componentes principales.
 ```{r}
 fviz_eig(compPrinc, addlabels = TRUE, ylim = c(0, 80))
 ```
@@ -104,3 +104,10 @@ fviz_pca_var(compPrinc, col.var = "cos2",
              repel = TRUE # Avoid text overlapping
 )
 ```
+
+Hacemos matriz de correlación con los datos.
+```{r}
+var<-get_pca_var(compPrinc)
+corrplot(var$cos2, is.corr = F)
+```
+

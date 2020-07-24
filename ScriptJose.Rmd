@@ -1,0 +1,171 @@
+---
+title: "Housing"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+```
+
+# Análisis de variables cuantitativas 
+
+### Análisis de normalidad 
+
+A continuación, se realizan gráficas Q-Q (quantile-quantile) para conocer que tan normales son nuestras variables de tipo cuantitativo. Lo ideal es que los puntos se acerquen a una recta diagonal. 
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$GrLivArea)),main = "Distribucion normal de GrLivArea")
+qqline(na.omit(as.numeric(dataSet$GrLivArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$GarageArea)),main = "Distribucion normal de GarageArea")
+qqline(na.omit(as.numeric(dataSet$GarageArea)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$TotalBsmtSF)),main = "Distribucion normal de TotalBsmtSF")
+qqline(na.omit(as.numeric(dataSet$TotalBsmtSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X1stFlrSF)),main = "Distribucion normal de X1stFlrSF")
+qqline(na.omit(as.numeric(dataSet$X1stFlrSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$YearBuilt)),main = "Distribucion normal de YearBuilt")
+qqline(na.omit(as.numeric(dataSet$YearBuilt)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$YearRemodAdd)),main = "Distribucion normal de YearRemodAdd")
+qqline(na.omit(as.numeric(dataSet$YearRemodAdd)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtFinSF1)),main = "Distribucion normal de BsmtFinSF1")
+qqline(na.omit(as.numeric(dataSet$BsmtFinSF1)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$WoodDeckSF)),main = "Distribucion normal de WoodDeckSF")
+qqline(na.omit(as.numeric(dataSet$WoodDeckSF)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X2ndFlrSF)),main = "Distribucion normal de X2ndFlrSF")
+qqline(na.omit(as.numeric(dataSet$X2ndFlrSF)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$OpenPorchSF)),main = "Distribucion normal de OpenPorchSF")
+qqline(na.omit(as.numeric(dataSet$OpenPorchSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$LotArea)),main = "Distribucion normal de LotArea")
+qqline(na.omit(as.numeric(dataSet$LotArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtUnfSF)),main = "Distribucion normal de BsmtUnfSF")
+qqline(na.omit(as.numeric(dataSet$BsmtUnfSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$ScreenPorch)),main = "Distribucion normal de ScreenPorch")
+qqline(na.omit(as.numeric(dataSet$ScreenPorch)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$PoolArea)),main = "Distribucion normal de PoolArea")
+qqline(na.omit(as.numeric(dataSet$PoolArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X3SsnPorch)),main = "Distribucion normal de X3SsnPorch")
+qqline(na.omit(as.numeric(dataSet$X3SsnPorch)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtFinSF2)),main = "Distribucion normal de BsmtFinSF2")
+qqline(na.omit(as.numeric(dataSet$BsmtFinSF2)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtHalfBath)),main = "Distribucion normal de BsmtHalfBath")
+qqline(na.omit(as.numeric(dataSet$BsmtHalfBath)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$MiscVal)),main = "Distribucion normal de MiscVal")
+qqline(na.omit(as.numeric(dataSet$MiscVal)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$LowQualFinSF)),main = "Distribucion normal de LowQualFinSF")
+qqline(na.omit(as.numeric(dataSet$LowQualFinSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$KitchenAbvGr)),main = "Distribucion normal de KitchenAbvGr")
+qqline(na.omit(as.numeric(dataSet$KitchenAbvGr)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$LotFrontage)),main = "Distribucion normal de LotFrontage")
+qqline(na.omit(as.numeric(dataSet$LotFrontage)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$MasVnrArea)),main = "Distribucion normal de MasVnrArea")
+qqline(na.omit(as.numeric(dataSet$MasVnrArea)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$GarageYrBlt)),main = "Distribucion normal de GarageYrBlt")
+qqline(na.omit(as.numeric(dataSet$GarageYrBlt)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$GarageYrBlt)),main = "Distribucion normal de GarageYrBlt")
+qqline(na.omit(as.numeric(dataSet$GarageYrBlt)))
+```
+
+# Análisis de variables cualitativas 
+
+### Tablas de frecuencia 
+
+A continuación,
+
+```{r}
+barplot(table(dataSet$MSZoning))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
