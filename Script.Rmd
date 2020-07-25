@@ -480,3 +480,56 @@ Variable categórica nominal
 Condiciones de venta
 
 Variable categórica nominal
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+```
+
+Se seleccionanan las variables que son númericas. Asignanado 0 en los lugares en donde se encontra un Na.
+
+```{r}
+library(dplyr)
+datosNumericos <- select(dataSet, LotArea,MasVnrArea,BsmtFinSF1,BsmtFinSF2,BsmtUnfSF,TotalBsmtSF,X1stFlrSF,X2ndFlrSF,LowQualFinSF,GrLivArea,BsmtFullBath,BsmtHalfBath,FullBath,HalfBath,TotRmsAbvGrd,Fireplaces,GarageCars,GarageArea,WoodDeckSF,OpenPorchSF,EnclosedPorch,X3SsnPorch,ScreenPorch,PoolArea)
+datosNumericos[is.na(datosNumericos)] <- 0
+datosNumericos2 <- datosNumericos
+View(datosNumericos2)
+```
+
+```{r}
+datosNumericos$LotArea <- as.numeric(datosNumericos$LotArea)
+datosNumericos$MasVnrArea <- as.numeric(datosNumericos$MasVnrArea)
+datosNumericos$BsmtFinSF1 <- as.numeric(datosNumericos$BsmtFinSF1)
+datosNumericos$BsmtFinSF2 <- as.numeric(datosNumericos$BsmtFinSF2)
+datosNumericos$BsmtUnfSF <- as.numeric(datosNumericos$BsmtUnfSF)
+datosNumericos$TotalBsmtSF <- as.numeric(datosNumericos$TotalBsmtSF)
+datosNumericos$X1stFlrSF <- as.numeric(datosNumericos$X1stFlrSF)
+datosNumericos$X2ndFlrSF <- as.numeric(datosNumericos$X2ndFlrSF)
+datosNumericos$LowQualFinSF <- as.numeric(datosNumericos$LowQualFinSF)
+datosNumericos$GrLivArea <- as.numeric(datosNumericos$GrLivArea)
+datosNumericos$BsmtFullBath <- as.numeric(datosNumericos$BsmtFullBath)
+datosNumericos$BsmtHalfBath <- as.numeric(datosNumericos$BsmtHalfBath)
+datosNumericos$FullBath <- as.numeric(datosNumericos$FullBath)
+datosNumericos$HalfBath <- as.numeric(datosNumericos$HalfBath)
+datosNumericos$TotRmsAbvGrd <- as.numeric(datosNumericos$TotRmsAbvGrd)
+datosNumericos$Fireplaces <- as.numeric(datosNumericos$Fireplaces)
+datosNumericos$GarageCars <- as.numeric(datosNumericos$GarageCars)
+datosNumericos$GarageArea <- as.numeric(datosNumericos$GarageArea)
+datosNumericos$WoodDeckSF <- as.numeric(datosNumericos$WoodDeckSF)
+datosNumericos$OpenPorchSF <- as.numeric(datosNumericos$OpenPorchSF)
+datosNumericos$EnclosedPorch <- as.numeric(datosNumericos$EnclosedPorch)
+datosNumericos$X3SsnPorch <- as.numeric(datosNumericos$X3SsnPorch)
+datosNumericos$ScreenPorch <- as.numeric(datosNumericos$ScreenPorch)
+datosNumericos$PoolArea <- as.numeric(datosNumericos$PoolArea)
+View(datosNumericos)
+```
+```{r}
+correlacion <- cor(datosNumericos)
+```
+```{r}
+library(corrplot)
+corrplot(correlacion)
+```
+
+Como podemos observar existe una correlacion alta entre la cantidad de pies cuadrados del primer piso y el tamaño del sótano, la capacidad en carros del garaje y el áre del garaje , y la cantidad de cuartos sobre la superficie y la cantidad de mtros cuadrádos sobre la superficie. De alguna maner podemos decir que esto es de esperarse gracias a que estas son varibales que describen una misma sección de la casa apartir de dos enfoques diferentes. Este mismo argumento se puede utilizar para las variables inversamente proporcionales. Por ejemplo en el caso de la cantidad de metros cuadrados terminados y sin terminar en el sotano, encontramos esta relación inversamente proporcional tan alta se debe a que, ambas describen el estado del sótano de maneras distintas. 
