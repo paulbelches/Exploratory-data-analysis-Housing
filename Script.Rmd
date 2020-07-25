@@ -161,7 +161,7 @@ Variable categórica nominal
 
 Área de mampostería en pies cuadrados
 
-Masonry veneer area in square feet
+Variable cuantitativa continua
 
 # ExterQual
 
@@ -317,7 +317,7 @@ Variable cuantitativa discreta
 
 Cantidad de cocinas sobre la superficie
 
-Kitchens above grade
+Variable cuantitativa discreta
 
 # KitchenQual
 
@@ -377,7 +377,7 @@ Variable cuantitativa discreta
 
 Tamaño del garaje en pies cuadrados
 
-Size of garage in square feet
+Variable cuantitativa continua
 
 # GarageQual
 
