@@ -161,7 +161,7 @@ Variable categórica nominal
 
 Área de mampostería en pies cuadrados
 
-Masonry veneer area in square feet
+Variable cuantitativa continua
 
 # ExterQual
 
