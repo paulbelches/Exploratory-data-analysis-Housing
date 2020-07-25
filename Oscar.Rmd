@@ -111,3 +111,14 @@ var<-get_pca_var(compPrinc)
 corrplot(var$cos2, is.corr = F)
 ```
 
+Los componentes principales acorde a la presente matriz serían, con un porcentaje de varianza mayor al 9% son:
+
+* Dimensión 1: OverallQuall, GrLivArea, GarageCars, GarageArea, TotRmsAbvGrd y FullBath
+* Dimensión 2: BedroomAbvGr, X2ndFlrSF, BsmtUnfSF y BsmtFullBath
+
+### Dimensión 1
+Esta dimensión parece tomar en cuenta el tamaño y calidad de una casa. Posee la variable *OverallQual* la cual describe  un promedio de los materiales de la casa, junto a *GrLivArea*, *GarageArea* y *TotRmsAbvGrd* que relacionan el tamaño de la casa sobre el terreno; al tener una casa muy grande y varios cuartos en un segundo nivel, el precio de la casa puede aumentar. Finalmente, *GarageCars* y *FullBath* consideran la cantidad de carros en el garage y baños completos sobre la superficie; proporcional al precio de la casa. Posee una **varianza del 19.3%** que nos indica unala asociación más alta entre variables. considerable.
+
+### Dimensión 2
+Este otro componente principal agrupa elementos como la cantidad de cuartos en un segundo nivel, revestimiento de la casa y cantidad de baños completos en el sótano; definido por las variables *BedrromAbvGr*, *X2ndFlrSF* y *BsmtFullBath* respectivamente. Posee una **varianza del 9.8%**, menos de la mitad de la varianza más alta (respecto a la dimensión 1).
+
