@@ -5,7 +5,7 @@ output
   html_document default
 ---
 
-##Clasifición de las variables
+## Clasifición de las variables
 
 # MSSubClass
 
@@ -487,6 +487,11 @@ knitr::opts_chunk$set(echo = TRUE)
 dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
 ```
 
+# Análisis de variables cuantitativas 
+
+### Análisis de correlación
+
+
 Se seleccionanan las variables que son númericas. Asignanado 0 en los lugares en donde se encontra un Na.
 
 ```{r}
@@ -533,3 +538,386 @@ corrplot(correlacion)
 ```
 
 Como podemos observar existe una correlacion alta entre la cantidad de pies cuadrados del primer piso y el tamaño del sótano, la capacidad en carros del garaje y el áre del garaje , y la cantidad de cuartos sobre la superficie y la cantidad de mtros cuadrádos sobre la superficie. De alguna maner podemos decir que esto es de esperarse gracias a que estas son varibales que describen una misma sección de la casa apartir de dos enfoques diferentes. Este mismo argumento se puede utilizar para las variables inversamente proporcionales. Por ejemplo en el caso de la cantidad de metros cuadrados terminados y sin terminar en el sotano, encontramos esta relación inversamente proporcional tan alta se debe a que, ambas describen el estado del sótano de maneras distintas. 
+
+
+
+### Análisis de normalidad 
+
+A continuación, se realizan gráficas Q-Q (quantile-quantile) para conocer que tan normales son nuestras variables de tipo cuantitativo. Lo ideal es que los puntos se acerquen a una recta diagonal. 
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$GrLivArea)),main = "Distribucion normal de GrLivArea")
+qqline(na.omit(as.numeric(dataSet$GrLivArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$GarageArea)),main = "Distribucion normal de GarageArea")
+qqline(na.omit(as.numeric(dataSet$GarageArea)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$TotalBsmtSF)),main = "Distribucion normal de TotalBsmtSF")
+qqline(na.omit(as.numeric(dataSet$TotalBsmtSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X1stFlrSF)),main = "Distribucion normal de X1stFlrSF")
+qqline(na.omit(as.numeric(dataSet$X1stFlrSF)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtFinSF1)),main = "Distribucion normal de BsmtFinSF1")
+qqline(na.omit(as.numeric(dataSet$BsmtFinSF1)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$WoodDeckSF)),main = "Distribucion normal de WoodDeckSF")
+qqline(na.omit(as.numeric(dataSet$WoodDeckSF)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X2ndFlrSF)),main = "Distribucion normal de X2ndFlrSF")
+qqline(na.omit(as.numeric(dataSet$X2ndFlrSF)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$OpenPorchSF)),main = "Distribucion normal de OpenPorchSF")
+qqline(na.omit(as.numeric(dataSet$OpenPorchSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$LotArea)),main = "Distribucion normal de LotArea")
+qqline(na.omit(as.numeric(dataSet$LotArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtUnfSF)),main = "Distribucion normal de BsmtUnfSF")
+qqline(na.omit(as.numeric(dataSet$BsmtUnfSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$ScreenPorch)),main = "Distribucion normal de ScreenPorch")
+qqline(na.omit(as.numeric(dataSet$ScreenPorch)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$PoolArea)),main = "Distribucion normal de PoolArea")
+qqline(na.omit(as.numeric(dataSet$PoolArea)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$X3SsnPorch)),main = "Distribucion normal de X3SsnPorch")
+qqline(na.omit(as.numeric(dataSet$X3SsnPorch)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtFinSF2)),main = "Distribucion normal de BsmtFinSF2")
+qqline(na.omit(as.numeric(dataSet$BsmtFinSF2)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$BsmtHalfBath)),main = "Distribucion normal de BsmtHalfBath")
+qqline(na.omit(as.numeric(dataSet$BsmtHalfBath)))
+```
+
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$LowQualFinSF)),main = "Distribucion normal de LowQualFinSF")
+qqline(na.omit(as.numeric(dataSet$LowQualFinSF)))
+```
+
+```{r}
+qqnorm(na.omit(as.numeric(dataSet$KitchenAbvGr)),main = "Distribucion normal de KitchenAbvGr")
+qqline(na.omit(as.numeric(dataSet$KitchenAbvGr)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$LotFrontage)),main = "Distribucion normal de LotFrontage")
+qqline(na.omit(as.numeric(dataSet$LotFrontage)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$MasVnrArea)),main = "Distribucion normal de MasVnrArea")
+qqline(na.omit(as.numeric(dataSet$MasVnrArea)))
+```
+
+```{r,echo=FALSE}
+qqnorm(na.omit(as.numeric(dataSet$EnclosedPorch)),main = "Distribucion normal de EnclosedPorch")
+qqline(na.omit(as.numeric(dataSet$EnclosedPorch)))
+```
+
+
+Como podemos observar la mayoría de las variables siguen el comportamiento de la recta diagonal especialmente en el centro, en los extremos de la gráfica se empiezan a desviar los puntos lo que quiere decir que tenemos datos atípicos. Lo que puede significar es que muy pocas casas tengan ciertas cualidades, por ejemplo es lógico que la mayoría de casas van a ser estándar pero muy pocas van a ser de lujo o muy pero muy sencillas.
+
+
+# Análisis de variables cualitativas 
+
+### Tablas de frecuencia y gráficas de distribución 
+
+A continuación, se muestran gráficos de barras para las variables cualitativas, en el caso de que sean muchos posibles valores de la variable se muestran tablas de frecuencia. Esto se hace para conocer un poco el comportamiento de los datos, poder identificar los valores más predominantes en cada variable, así como también poder identificar si hay valores NAs. 
+
+```{r}
+barplot(table(dataSet$MSZoning),main = "Distribución MSZoning",
+        xlab="MSZoning")
+```
+
+```{r}
+barplot(table(dataSet$MSSubClass),main = "Distribución MSSubClass",
+        xlab="MSSubClass")
+```
+
+```{r}
+barplot(table(dataSet$Street),main = "Distribución Street",
+        xlab="Street")
+```
+
+```{r}
+barplot(table(dataSet$Alley),main = "Distribución Alley",
+        xlab="Alley")
+```
+
+```{r}
+barplot(table(dataSet$LotShape),main = "Distribución LotShape",
+        xlab="LotShape")
+```
+
+```{r}
+barplot(table(dataSet$LandContour),main = "Distribución LandContour",
+        xlab="LandContour")
+```
+
+```{r}
+barplot(table(dataSet$Utilities),main = "Distribución Utilities",
+        xlab="Utilities")
+```
+
+```{r}
+barplot(table(dataSet$LotConfig),main = "Distribución LotConfig",
+        xlab="LotConfig")
+```
+
+```{r}
+barplot(table(dataSet$LandSlope),main = "Distribución LandSlope",
+        xlab="LandSlope")
+```
+
+```{r}
+barplot(table(dataSet$Neighborhood),main = "Distribución Neighborhood",las=2)
+```
+
+```{r}
+barplot(table(dataSet$Condition1),main = "Distribución Condition1",
+        xlab="Condition1",las=2)
+```
+
+```{r}
+barplot(table(dataSet$Condition2),main = "Distribución Condition2",
+        xlab="Condition2",las=2)
+```
+
+```{r}
+barplot(table(dataSet$BldgType),main = "Distribución BldgType",
+        xlab="BldgType")
+```
+
+```{r}
+barplot(table(dataSet$HouseStyle),main = "Distribución HouseStyle",
+        las=2)
+```
+
+```{r}
+barplot(table(dataSet$OverallQual),main = "Distribución OverallQual",
+        xlab="OverallQual")
+```
+
+```{r}
+barplot(table(dataSet$OverallCond),main = "Distribución OverallCond",
+        xlab="OverallCond")
+```
+
+```{r}
+knitr::kable(
+  table(dataSet$YearBuilt), caption = 'Tabla de frecuencia YearBuilt'
+)
+```
+
+```{r}
+knitr::kable(
+  table(dataSet$YearRemodAdd), caption = 'Tabla de frecuencia YearRemodAdd'
+)
+```
+
+```{r}
+barplot(table(dataSet$RoofStyle),main = "Distribución RoofStyle",
+        xlab="RoofStyle",las=2)
+```
+
+```{r}
+barplot(table(dataSet$RoofMatl),main = "Distribución RoofMatl",
+        xlab="RoofMatl")
+```
+
+```{r}
+barplot(table(dataSet$Exterior1st),main = "Distribución Exterior1st",
+         las=2)
+```
+
+```{r}
+barplot(table(dataSet$Exterior2nd),main = "Distribución Exterior2nd",
+         las=2)
+```
+
+```{r}
+barplot(table(dataSet$MasVnrType),main = "Distribución MasVnrType",
+        xlab="MasVnrType")
+```
+
+
+```{r}
+barplot(table(dataSet$ExterQual),main = "Distribución ExterQual",
+        xlab="ExterQual")
+```
+
+```{r}
+barplot(table(dataSet$ExterCond),main = "Distribución ExterCond",
+        xlab="ExterCond")
+```
+
+```{r}
+barplot(table(dataSet$Foundation),main = "Distribución Foundation",
+        xlab="Foundation")
+```
+
+```{r}
+barplot(table(dataSet$BsmtQual),main = "Distribución BsmtQual",
+        xlab="BsmtQual")
+```
+
+```{r}
+barplot(table(dataSet$BsmtCond),main = "Distribución BsmtCond",
+        xlab="BsmtCond")
+```
+
+```{r}
+barplot(table(dataSet$BsmtExposure),main = "Distribución BsmtExposure",
+        xlab="BsmtExposure")
+```
+
+```{r}
+barplot(table(dataSet$BsmtFinType1),main = "Distribución BsmtFinType1",
+        xlab="BsmtFinType1")
+```
+
+```{r}
+barplot(table(dataSet$BsmtFinType2),main = "Distribución BsmtFinType2",
+        xlab="BsmtFinType2")
+```
+
+```{r}
+barplot(table(dataSet$Heating),main = "Distribución Heating",
+        xlab="Heating")
+```
+
+```{r}
+barplot(table(dataSet$HeatingQC),main = "Distribución HeatingQC",
+        xlab="HeatingQC")
+```
+
+```{r}
+barplot(table(dataSet$CentralAir),main = "Distribución CentralAir",
+        xlab="CentralAir")
+```
+
+```{r}
+barplot(table(dataSet$Electrical),main = "Distribución Electrical",
+        xlab="Electrical")
+```
+
+```{r}
+barplot(table(dataSet$KitchenQual),main = "Distribución KitchenQual",
+        xlab="KitchenQual")
+```
+
+```{r}
+barplot(table(dataSet$Functional),main = "Distribución Functional",
+        xlab="Functional")
+```
+
+```{r}
+barplot(table(dataSet$GarageType),main = "Distribución GarageType",
+        las=2)
+```
+
+```{r}
+knitr::kable(
+  table(dataSet$GarageYrBlt), caption = 'Tabla de frecuencia GarageYrBlt'
+)
+```
+
+```{r}
+barplot(table(dataSet$GarageFinish),main = "Distribución GarageFinish",
+        xlab="GarageFinish")
+```
+
+```{r}
+barplot(table(dataSet$GarageQual),main = "Distribución GarageQual",
+        xlab="GarageQual")
+```
+
+```{r}
+barplot(table(dataSet$GarageCond),main = "Distribución GarageCond",
+        xlab="GarageCond")
+```
+
+```{r}
+barplot(table(dataSet$PavedDrive),main = "Distribución PavedDrive",
+        xlab="PavedDrive")
+```
+
+```{r}
+barplot(table(dataSet$PoolQC),main = "Distribución PoolQC",
+        xlab="PoolQC")
+```
+
+```{r}
+barplot(table(dataSet$Fence),main = "Distribución Fence",
+        xlab="Fence")
+```
+
+```{r}
+barplot(table(dataSet$MiscFeature),main = "Distribución MiscFeature",
+        xlab="MiscFeature")
+```
+
+```{r}
+barplot(table(dataSet$MiscVal),main = "Distribución MiscVal",
+        xlab="MiscVal",las=2)
+```
+
+```{r}
+barplot(table(dataSet$MoSold),main = "Distribución MoSold",
+        xlab="MoSold")
+```
+
+```{r}
+barplot(table(dataSet$YrSold),main = "Distribución YrSold",
+        xlab="YrSold")
+```
+
+```{r}
+barplot(table(dataSet$SaleType),main = "Distribución SaleType",
+        las=2)
+```
+
+```{r}
+barplot(table(dataSet$SaleCondition),main = "Distribución SaleCondition",
+        xlab="SaleCondition")
+```
+
+Como podemos observar en la mayoría de las variables no hay valores NAs y si lo hay es mínima. Las únicas variables que tienen una fuerte presencia de estos son las siguientes: calidad de la piscina (PoolQC), calidad de la cerca (Fence), características extras (MiscFeature). Podemos suponer que estas variables tienen ausencia de valores debido a que son características que no todas las casas tienen.
+
+
