@@ -920,4 +920,217 @@ barplot(table(dataSet$SaleCondition),main = "Distribución SaleCondition",
 
 Como podemos observar en la mayoría de las variables no hay valores NAs y si lo hay es mínima. Las únicas variables que tienen una fuerte presencia de estos son las siguientes: calidad de la piscina (PoolQC), calidad de la cerca (Fence), características extras (MiscFeature). Podemos suponer que estas variables tienen ausencia de valores debido a que son características que no todas las casas tienen.
 
+## Preguntas para conocer mejor los datos
+
+Preparación de los datos:
+```{r}
+rowNumbers <- c()
+varNames <- c()
+
+# Obtener vector de columnas num?ricas
+for(name in colnames(dataSet)){
+  if(is.numeric(dataSet[1,name]) && name != "Id")
+  {
+    rowNumbers <- c(rowNumbers, which(colnames(dataSet)==name))
+    varNames <- c(varNames, name)
+  }
+}
+```
+
+
+
+1. ¿Se asocian ciertos vecindarios a los lotes más grandes?
+```{r}
+# ¿Cuál es la capacidad promedio en carros de los garajes de las casas más caras?
+carrosCasasDesc <- dataSet[order(dataSet$SalePrice, decreasing = TRUE),c("GarageCars","SalePrice")]
+mean(carrosCasasDesc[1:50,1])
+```
+Se ordenó el dataset de las casas descendiente en cuanto a su precio. Se hizo un promedio de los garajes en las 50 casas más caras y este resultó ser de 2.92 carros por garaje en las casas más caras. Crawfor, Timber, Gilbert son los vecindarios con mayor cantidad de apariciones.
+
+2. ¿Cuál es el promedio de cuartos que tienen las 200 casas más caras?
+```{r}
+mean(head(dataSet[order(dataSet$SalePrice,decreasing = TRUE),c("BedroomAbvGr")], n = 200))
+```
+El promedio de cuartos que tienen las 200 casas más caras es de 3 cuartos.
+
+3. ¿En qué intervalo de años han sido construidas las casas más caras?
+```{r}
+table(head(dataSet[order(dataSet$SalePrice,decreasing = TRUE),c("YearBuilt")], n = 200))
+```
+Nuevamente tomamos como las casas más caras a las 200 casas con mayor precio de venta. Como podemos observar el año que se construyeron más casas caras fue wn el 2006. Le sigue el año 2007 y luego el año 2005.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+library(rela)
+library(psych)
+library(FactoMineR)
+library(corrplot)
+library(knitr)
+library(factoextra)
+library(arules)
+```
+
+## Análisis de los componentes princpales
+
+Primero, debemos definir solo las variables cuantitativas útiles de nuestro set de datos
+
+```{r}
+datosNumericos <- dataSet[,c("MSSubClass","LotArea","OverallQual","OverallCond","YearBuilt","YearRemodAdd","BsmtFinSF1","BsmtUnfSF","TotalBsmtSF","X2ndFlrSF","LowQualFinSF","GrLivArea","BsmtFullBath","BsmtHalfBath","FullBath","HalfBath","BedroomAbvGr","KitchenAbvGr","TotRmsAbvGrd","Fireplaces","GarageCars","GarageArea","WoodDeckSF","OpenPorchSF","EnclosedPorch","X3SsnPorch","ScreenPorch","PoolArea","MiscVal","MoSold","YrSold")]
+
+datosNumericos[is.na(datosNumericos)] <- 0
+```
+
+
+Ahora analizamos si es posible utilizar el análisis factorial para formar las combinaciones lineales de las variables.
+
+```{r}
+pafDatos<-paf(as.matrix(datosNumericos))
+pafDatos$KMO
+pafDatos$Bartlett
+#summary(pafDatos)
+```
+
+Obtenemos un **KMO** de *0.73*, lo cual significa una aceptable adecuación muestral. Por otra parte, el **Bartlett** es de *21612* lo cual es un valor alto indicando menos probabilidad que la matriz sea una matriz identidad.
+
+
+También debemos validar el **nivel de significación** de la prueba
+
+```{r}
+cortest.bartlett(datosNumericos[,-1])
+```
+
+El valor p es de 0, dado que es mayor a 0.05, el análisis factorial podría no funcionar. Vale la pena mostrar la matriz de correlación.
+
+```{r results = 'hide'}
+cor(datosNumericos[,-1], use = "pairwise.complete.obs")
+```
+
+Del último resultado, cabe destacar los **15 valores con mayor correlación** entre ellos.
+
+VARIABLE 1 | VARIABLE 2 | CORRELACIÓN
+-------|--------|-------		
+GarageCars | GarageArea | 0.882
+TotRmsAbvGrd | GrLivArea | 0.825
+X2ndFlrSF | GrLivArea | 0.687
+BedroomAbvGr | TotRmsAbvGrd | 0.676
+BsmtFullBath | BsmtFinSF1 | 0.649
+FullBath | GrLivArea | 0.63
+TotRmsAbvGrd | X2ndFlrSF | 0.616
+HalfBath | X2ndFlrSF | 0.611
+GarageCars | OverallQual | 0.6
+YearRemodAdd | YearBuilt | 0.593
+YearBuilt | OverallQual | 0.572
+GarageArea | OverallQual | 0.562
+YearRemodAdd | OverallQual | 0.551
+GarageCars | YearBuilt | 0.538
+BedroomAbvGr | GrLivArea | 0.521
+
+Podemos notar una correlación significativa entre la cantidad de carros que caben en un garage, junto con el área de esta. Además, parece haber correlación entre el total de habitaciones en un segundo nivel junto con el GrLivArea.
+
+
+Normalizamos los datos y obtenemos un resúmen de los componentes.
+
+```{r}
+compPrinc<-prcomp(datosNumericos, scale = T)
+summary(compPrinc)
+```
+
+
+Ahora podemos darnos una idea del comportamiento con los siguientes dos gráficos
+```{r}
+compPrincPCA<-PCA(datosNumericos[,-1],ncp=ncol(datosNumericos[,-1]), scale.unit = T)
+
+# summary(compPrincPCA)
+```
+
+
+
+Hacemos scree plot de los componentes principales.
+```{r}
+fviz_eig(compPrinc, addlabels = TRUE, ylim = c(0, 80))
+```
+
+Ahora, se muestra la calidad de la representación de los componentes respecto a las dos primeras dimensiones.
+```{r}
+# En la siguiente grÃ¡fica se ilustra la calidad de la representaciÃ³n de los componentes en las dos primeras dimensiones.
+fviz_pca_var(compPrinc, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE # Avoid text overlapping
+)
+```
+
+Hacemos matriz de correlación con los datos.
+```{r}
+var<-get_pca_var(compPrinc)
+corrplot(var$cos2, is.corr = F)
+```
+
+Los componentes principales acorde a la presente matriz serían, con un porcentaje de varianza mayor al 9% son:
+
+* Dimensión 1: OverallQuall, GrLivArea, GarageCars, GarageArea, TotRmsAbvGrd y FullBath
+* Dimensión 2: BedroomAbvGr, X2ndFlrSF, BsmtUnfSF y BsmtFullBath
+
+### Dimensión 1
+Esta dimensión parece tomar en cuenta el tamaño y calidad de una casa. Posee la variable *OverallQual* la cual describe  un promedio de los materiales de la casa, junto a *GrLivArea*, *GarageArea* y *TotRmsAbvGrd* que relacionan el tamaño de la casa sobre el terreno; al tener una casa muy grande y varios cuartos en un segundo nivel, el precio de la casa puede aumentar. Finalmente, *GarageCars* y *FullBath* consideran la cantidad de carros en el garage y baños completos sobre la superficie; proporcional al precio de la casa. Posee una **varianza del 19.3%** que nos indica unala asociación más alta entre variables. considerable.
+
+### Dimensión 2
+Este otro componente principal agrupa elementos como la cantidad de cuartos en un segundo nivel, revestimiento de la casa y cantidad de baños completos en el sótano; definido por las variables *BedrromAbvGr*, *X2ndFlrSF* y *BsmtFullBath* respectivamente. Posee una **varianza del 9.8%**, menos de la mitad de la varianza más alta (respecto a la dimensión 1).
+
+
+## Reglas de asociación
+
+Se utilizará un subset de variables que afecten el precio de la casa. Para ello, se hace un mapa de correlación y se usará solo las variables con correlación más alta.
+```{r}
+setDatosNum <- dataSet[,c("MSSubClass","LotArea","OverallQual","OverallCond","YearBuilt","YearRemodAdd","BsmtFinSF1","BsmtUnfSF","TotalBsmtSF","X2ndFlrSF","LowQualFinSF","GrLivArea","BsmtFullBath","BsmtHalfBath","FullBath","HalfBath","BedroomAbvGr","KitchenAbvGr","TotRmsAbvGrd","Fireplaces","GarageCars","GarageArea","WoodDeckSF","OpenPorchSF","EnclosedPorch","X3SsnPorch","ScreenPorch","PoolArea","MiscVal","SalePrice")]
+
+correlacion <- cor(setDatosNum)
+corrplot(correlacion)
+```
+
+En base a los resultados anteriores, se hará un subset con las siguientes variables:
+
+* OverallQual, TotalBsmtSF, GrLivArea, HalfBath, GarageCars, GarageArea, TotRmsAbvGrd, OverallCond, YearRemodAdd
+
+Además, su añadirán variables que parezcan interesantes como:
+
+* FullBath, YearBuilt, LotArea, BedroomAbvGrd, Fireplaces
+
+Se creará el dataset y definirá los datos a utilizar
+```{r}
+vectorVariables <- c("OverallQual","TotalBsmtSF","GrLivArea","HalfBath","GarageCars","GarageArea","TotRmsAbvGrd","OverallCond","YearRemodAdd","FullBath","YearBuilt","LotArea","BedroomAbvGr", "Fireplaces")
+datos = setDatosNum[,vectorVariables]
+```
+
+
+Definimos los datos a utilizar y obtenemos el mínimo nivel de soporte y confianza aceptados.
+```{r}
+datos$OverallQual <- as.factor(datos$OverallQual)
+datos$TotalBsmtSF <- as.factor(datos$TotalBsmtSF)
+datos$GrLivArea <- as.factor(datos$GrLivArea)
+datos$HalfBath <- as.factor(datos$HalfBath)
+datos$GarageCars <- as.factor(datos$GarageCars)
+datos$GarageArea <- as.factor(datos$GarageArea)
+datos$TotRmsAbvGrd <- as.factor(datos$TotRmsAbvGrd)
+datos$OverallCond <- as.factor(datos$OverallCond)
+datos$YearRemodAdd <- as.factor(datos$YearRemodAdd)
+datos$FullBath <- as.factor(datos$FullBath)
+datos$YearBuilt <- as.factor(datos$YearBuilt)
+datos$LotArea <- as.factor(datos$LotArea)
+datos$BedroomAbvGr <- as.factor(datos$BedroomAbvGr)
+datos$Fireplaces <- as.factor(datos$Fireplaces)
+
+reglas<-apriori(datos[, vectorVariables], parameter = list(support = 0.2,
+                                        confidence = 0.60,
+                                        target = "rules"))
+inspect(reglas)
+```
+
+### Reglas de asociación interesantes
+
+1. {OverallCond=5,FullBath=2}	=> {GarageCars=2}: Indica que, si la condición de la casa en promedio es buena y tiene 2 baños sobre la superficie, tendrá 2 espacio para 2 carros dentro del garaje. Posee un soporte relativamente bajo, de 0.28 y una confianza del 72%. Esto indica aproximadamente el 30% de filas poseen los valores de estas variables con una confianza considerablemente alta.
+  + 1.1 Esta regla aplica también para la condición promedio de la casa: {OverallCond=5,BedroomAbvGr=3}	=>	{FullBath=2}. Conafianza de 74% y soporte de 0.23.
+2. {FullBath=2,BedroomAbvGr=3} => {GarageCars=2}: Asume la existencia de espacio para 2 carros en el garaje, si la casa posee 2 baños sobre la superficie y 3 habitaciones sobre la superficie. Este es el tamaño adecuado para una casa con una pareja y 3 hijos, en donde los hijos comparten baño. Posee un soporte de 22% y una confianza del 74%. Es una regla confiable.
+3. {OverallCond=5,Fireplaces=1}	=> {FullBath=2}: Considera que, con una condición promedio adeucada de una casa y 1 chimenea, se tendrá 2 baños sobre la superficie. Posee un soporte de 0.23 y una confianza del 81%.
+
 
