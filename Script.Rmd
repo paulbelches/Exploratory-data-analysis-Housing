@@ -1141,4 +1141,6 @@ inspect(reglas)
 2. {FullBath=2,BedroomAbvGr=3} => {GarageCars=2}: Asume la existencia de espacio para 2 carros en el garaje, si la casa posee 2 baños sobre la superficie y 3 habitaciones sobre la superficie. Este es el tamaño adecuado para una casa con una pareja y 3 hijos, en donde los hijos comparten baño. Posee un soporte de 22% y una confianza del 74%. Es una regla confiable.
 3. {OverallCond=5,Fireplaces=1}	=> {FullBath=2}: Considera que, con una condición promedio adeucada de una casa y 1 chimenea, se tendrá 2 baños sobre la superficie. Posee un soporte de 0.23 y una confianza del 81%.
 
+## Conclusiones
 
+1. La mayoría de las variables que se encontraban corelacionadas entre si, de forma tanto directamente como inversamente, describian una misma sección de la casa. Como lo es el caso de la capacidad del garaje y el area del garaje, o la cantidad de pies cuadrados sin terminar y la cantidad de pies cuadraros terminados en el sótano. 
