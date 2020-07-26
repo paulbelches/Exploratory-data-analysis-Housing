@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = TRUE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
+dataSet = read.csv("train.csv",stringsAsFactors = FALSE, na.strings = FALSE, strip.white = TRUE,sep = ",", encoding="UTF-8" )
 ```
 
 # Análisis de variables cuantitativas 
@@ -443,4 +443,56 @@ barplot(table(dataSet$SaleCondition),main = "Distribución SaleCondition",
 
 Como podemos observar en la mayoría de las variables no hay valores NAs y si lo hay es mínima. Las únicas variables que tienen una fuerte presencia de estos son las siguientes: calidad de la piscina (PoolQC), calidad de la cerca (Fence), características extras (MiscFeature). Podemos suponer que estas variables tienen ausencia de valores debido a que son características que no todas las casas tienen.
 
+
+## Preguntas para conocer mejor los datos
+
+Preparación de los datos:
+```{r}
+rowNumbers <- c()
+varNames <- c()
+
+# Obtener vector de columnas num?ricas
+for(name in colnames(dataSet)){
+  if(is.numeric(dataSet[1,name]) && name != "Id")
+  {
+    rowNumbers <- c(rowNumbers, which(colnames(dataSet)==name))
+    varNames <- c(varNames, name)
+  }
+}
+```
+
+
+1. ¿Cuál es el promedio de chimeneas que tienen las casas más caras?
+
+```{r}
+mean(head(data[order(data$SalePrice,decreasing = TRUE),c("Fireplaces")], n = 20))
+```
+Tomamos como las casas más caras a las 20 casas con mayor precio de venta. Partiendo de esto, obtuvimos un promedio de 1.4 chimeneas, lo que nos lleva a concluir que las 20 casas más caras todas tienen 1 chimenea o más. 
+
+
+2. ¿El tamaño del garaje de una casa influye en el precio?
+```{r}
+cor(dataSet$GarageArea,data$SalePrice,method = c("pearson", "kendall", "spearman"))
+```
+Se realizó una correlación de pearson para ver la relación entre el tamaño del garaje de una casa y su precio de venta. Se obtuvo un coeficiente de 0.6234314, lo cual significa que si influye pero no fuertemente.
+
+3. ¿Se asocian ciertos vecindarios a los lotes más grandes?
+```{r}
+# ¿Cuál es la capacidad promedio en carros de los garajes de las casas más caras?
+carrosCasasDesc <- dataSet[order(dataSet$SalePrice, decreasing = TRUE),c("GarageCars","SalePrice")]
+mean(carrosCasasDesc[1:50,1])
+```
+Se ordenó el dataset de las casas descendiente en cuanto a su precio. Se hizo un promedio de los garajes en las 50 casas más caras y este resultó ser de 2.92 carros por garaje en las casas más caras. Crawfor, Timber, Gilbert son los vecindarios con mayor cantidad de apariciones.
+
+4. ¿Cuál es el promedio de cuartos que tienen las 200 casas más caras?
+```{r}
+mean(head(dataSet[order(dataSet$SalePrice,decreasing = TRUE),c("BedroomAbvGr")], n = 200))
+```
+El promedio de cuartos que tienen las 200 casas más caras es de 3 cuartos.
+
+5. ¿En qué intervalo de años han sido construidas las casas más caras?
+```{r}
+table(head(dataSet[order(dataSet$SalePrice,decreasing = TRUE),c("YearBuilt")], n = 200))
+```
+Nuevamente tomamos como las casas más caras a las 200 casas con mayor precio de venta. Como podemos observar el año que se construyeron más casas caras fue wn el 2006. Le sigue el año 2007 y luego el año 2005.
 
