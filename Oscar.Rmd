@@ -14,6 +14,7 @@ library(FactoMineR)
 library(corrplot)
 library(knitr)
 library(factoextra)
+library(arules)
 ```
 
 ## Análisis de los componentes princpales
@@ -122,3 +123,58 @@ Esta dimensión parece tomar en cuenta el tamaño y calidad de una casa. Posee l
 ### Dimensión 2
 Este otro componente principal agrupa elementos como la cantidad de cuartos en un segundo nivel, revestimiento de la casa y cantidad de baños completos en el sótano; definido por las variables *BedrromAbvGr*, *X2ndFlrSF* y *BsmtFullBath* respectivamente. Posee una **varianza del 9.8%**, menos de la mitad de la varianza más alta (respecto a la dimensión 1).
 
+
+## Reglas de asociación
+
+Se utilizará un subset de variables que afecten el precio de la casa. Para ello, se hace un mapa de correlación y se usará solo las variables con correlación más alta.
+```{r}
+setDatosNum <- dataSet[,c("MSSubClass","LotArea","OverallQual","OverallCond","YearBuilt","YearRemodAdd","BsmtFinSF1","BsmtUnfSF","TotalBsmtSF","X2ndFlrSF","LowQualFinSF","GrLivArea","BsmtFullBath","BsmtHalfBath","FullBath","HalfBath","BedroomAbvGr","KitchenAbvGr","TotRmsAbvGrd","Fireplaces","GarageCars","GarageArea","WoodDeckSF","OpenPorchSF","EnclosedPorch","X3SsnPorch","ScreenPorch","PoolArea","MiscVal","SalePrice")]
+
+correlacion <- cor(setDatosNum)
+corrplot(correlacion)
+```
+
+En base a los resultados anteriores, se hará un subset con las siguientes variables:
+
+* OverallQual, TotalBsmtSF, GrLivArea, HalfBath, GarageCars, GarageArea, TotRmsAbvGrd, OverallCond, YearRemodAdd
+
+Además, su añadirán variables que parezcan interesantes como:
+
+* FullBath, YearBuilt, LotArea, BedroomAbvGrd, Fireplaces
+
+Se creará el dataset y definirá los datos a utilizar
+```{r}
+vectorVariables <- c("OverallQual","TotalBsmtSF","GrLivArea","HalfBath","GarageCars","GarageArea","TotRmsAbvGrd","OverallCond","YearRemodAdd","FullBath","YearBuilt","LotArea","BedroomAbvGr", "Fireplaces")
+datos = setDatosNum[,vectorVariables]
+```
+
+
+Definimos los datos a utilizar y obtenemos el mínimo nivel de soporte y confianza aceptados.
+```{r}
+datos$OverallQual <- as.factor(datos$OverallQual)
+datos$TotalBsmtSF <- as.factor(datos$TotalBsmtSF)
+datos$GrLivArea <- as.factor(datos$GrLivArea)
+datos$HalfBath <- as.factor(datos$HalfBath)
+datos$GarageCars <- as.factor(datos$GarageCars)
+datos$GarageArea <- as.factor(datos$GarageArea)
+datos$TotRmsAbvGrd <- as.factor(datos$TotRmsAbvGrd)
+datos$OverallCond <- as.factor(datos$OverallCond)
+datos$YearRemodAdd <- as.factor(datos$YearRemodAdd)
+datos$FullBath <- as.factor(datos$FullBath)
+datos$YearBuilt <- as.factor(datos$YearBuilt)
+datos$LotArea <- as.factor(datos$LotArea)
+datos$BedroomAbvGr <- as.factor(datos$BedroomAbvGr)
+datos$Fireplaces <- as.factor(datos$Fireplaces)
+
+reglas<-apriori(datos[, vectorVariables], parameter = list(support = 0.2,
+                                        confidence = 0.60,
+                                        target = "rules"))
+inspect(reglas)
+```
+
+### Reglas de asociación interesantes
+
+1. {OverallCond=5,FullBath=2}	=> {GarageCars=2}: Indica que, si la condición de la casa en promedio es buena y tiene 2 baños sobre la superficie, tendrá 2 espacio para 2 carros dentro del garaje. Posee un soporte relativamente bajo, de 0.28 y una confianza del 72%. Esto indica aproximadamente el 30% de filas poseen los valores de estas variables con una confianza considerablemente alta.
+  + 1.1 Esta regla aplica también para la condición promedio de la casa: {OverallCond=5,BedroomAbvGr=3}	=>	{FullBath=2}. Conafianza de 74% y soporte de 0.23.
+2. {FullBath=2,BedroomAbvGr=3} => {GarageCars=2}: Asume la existencia de espacio para 2 carros en el garaje, si la casa posee 2 baños sobre la superficie y 3 habitaciones sobre la superficie. Este es el tamaño adecuado para una casa con una pareja y 3 hijos, en donde los hijos comparten baño. Posee un soporte de 22% y una confianza del 74%. Es una regla confiable.
+3. {OverallCond=5,Fireplaces=1}	=> {FullBath=2}: Considera que, con una condición promedio adeucada de una casa y 1 chimenea, se tendrá 2 baños sobre la superficie. Posee un soporte de 0.23 y una confianza del 81%.
