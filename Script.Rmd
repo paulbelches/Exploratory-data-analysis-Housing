@@ -1,481 +1,489 @@
 ---
-title "Housing"
-output
-  pdf_document default
-  html_document default
+organization: "Universidad del Valle de Guatemala"
+title: "Laboratorio No.1"
+author: 
+- Paul Belches 
+- José Pablo Cifuentes
+- Oscar Juárez
+date: "25 de julio, 2020"
+output:
+  pdf_document
 ---
+\centering
+
+\raggedright
 
 ## Clasifición de las variables
 
-# MSSubClass
+### MSSubClass
 
 Identifica el tipo de vivienda involucrada en la venta. 
 
 Variable categórica nominal
 
-# MSZoning
+### MSZoning
 
 Identifica la clasificación general de la zona de venta
 
 Variable categórica nominal
 
-# LotFrontage
+### LotFrontage
 
 Cantidad de pies de la propiedad conectados a la calle
 
 Variable cuantitativa continua
 
-# LotArea
+### LotArea
 
 Tamaño del lote en pies cuadrados
 
 Variable cuantitativa continua
 
-# Street
+### Street
 
 Tipo del camino de acceso a la propiedad 
 
 Variable categórica nominal
        	
-# Alley
+### Alley
 
 Tipo del callejón de acceso a la propiedad 
 
 Variable categórica nominal
 		
-# LotShape
+### LotShape
 
 Forma general de la propiedad
 
 Variable categórica nominal
        
-# LandContour
+### LandContour
 
 Horizontalidad de la propiedad
 
 Variable categórica ordinal
 		
-# Utilities
+### Utilities
 
 Tipo de utilidades disponibles
 
 Variable categórica nominal
 	
-# LotConfig
+### LotConfig
 
 Configuración del lote
 
 Variable categórica nominal
 	
-# LandSlope
+### LandSlope
 
 Pendiente de la propiedad
 
 Variable categórica ordinal
 	
-# Neighborhood
+### Neighborhood
 
 Ubicación dentro de  la ciudad de Ames 
 
 Variable categórica nominal
 			
-# Condition1
+### Condition1
 
 Proximidad a condiciones varias 
 
 Variable categórica nominal
 	
-# Condition2
+### Condition2
 
 Proximidad a condiciones varias (si existe más de una presente)
 
 Variable categórica nominal
 	
-# BldgType
+### BldgType
 
 Tipo de vivienda
 
 Variable categórica nominal
 	
-# HouseStyle
+### HouseStyle
 
 Estilo de vivienda
 
 Variable categórica nominal
 
-# OverallQual
+### OverallQual
 
 Calificación promedio de los materiales y acabados de la casa
 
 Variable categórica ordinal
 	
-# OverallCond
+### OverallCond
 
 Calificación promedio de la condición de la casa
 
 Variable categórica ordinal
 		
-# YearBuilt
+### YearBuilt
 
 Fecha original de construcción 
 
 Variable categórica ordinal
 
-# YearRemodAdd
+### YearRemodAdd
 
 Fecha de remodelación (misma que en construcción en caso no se hayan efectuado adiciones o remodelaciones) 
 
 Variable categórica ordinal
 
-# RoofStyle
+### RoofStyle
 
 Tipo de techo
 
 Variable categórica nominal
 
-# RoofMatl
+### RoofMatl
 
 Material del techo
 
 Variable categórica nominal
 	
-# Exterior1st
+### Exterior1st
 
 Revestimiento de la casa
 
 Variable categórica nominal
 	
-# Exterior2nd
+### Exterior2nd
 
 Revestimiento de la casa (en caso exista más de uno)
 
 Variable categórica nominal
 	
-# MasVnrType
+### MasVnrType
 
 Tipo de mampostería 
 
 Variable categórica nominal
 	
-# MasVnrArea
+### MasVnrArea
 
 Área de mampostería en pies cuadrados
 
 Variable cuantitativa continua
 
-# ExterQual
+### ExterQual
 
 Evaluación de la calidad de los materiales del exterior
 
 Variable categórica ordinal
 		
-# ExterCond
+### ExterCond
 
 Evaluación de la condición presente de los materiales del exterior
 
 Variable categórica ordinal
 		
-# Foundation
+### Foundation
 
 Tipo de cimentación
 
 Variable categórica nominal
 		
-# BsmtQual
+### BsmtQual
 
 Evaluación de la altura del sótano 
 
 Variable categórica ordinal
 		
-# BsmtCond
+### BsmtCond
 
 Evaluación general de la condición del sótano 
 
 Variable categórica ordinal
 	
-# BsmtExposure
+### BsmtExposure
 
 Evaluación de la pared perimetral
 
 Variable categórica ordinal
 	
-# BsmtFinType1
+### BsmtFinType1
 
 Rating of basement finished area
 
 Variable categórica ordinal
 		
-# BsmtFinSF1
+### BsmtFinSF1
 
 Acabados de tipo 1 en pies cuadrados
 
 Variable cuantitativa continua
 
-# BsmtFinType2
+### BsmtFinType2
 
 Calificación de los acabados del sotano (si existe varios)
 
 Variable categórica ordinal
 
-# BsmtFinSF2
+### BsmtFinSF2
 
 Acabados de tipo 2 en pies cuadrados
 
 Variable cuantitativa continua
 
-# BsmtUnfSF
+### BsmtUnfSF
 
 Pies cuadrados sin terminar en el área del sótano
 
 Variable cuantitativa continua
 
-# TotalBsmtSF
+### TotalBsmtSF
 
 Cantidad total de pies cuadrados en el área del sótano
 
 Variable cuantitativa continua
 
-# Heating
+### Heating
 
 Tipo de calefacción
 
 Variable categórica nominal
 		
-# HeatingQC
+### HeatingQC
 
 Calidad y condición de la calefacción
 
 Variable categórica ordinal
 		
-# CentralAir 
+### CentralAir 
 
 Aire acondicionado central
 
 Variable categórica nominal
 
-# Electrical
+### Electrical
 
 Sistema eléctrico
 
 Variable categórica nominal
 		
-# 1stFlrSF
+### 1stFlrSF
 
 Pies cuadrados del primer piso
 
 Variable cuantitativa continua
  
-# 2ndFlrSF
+### 2ndFlrSF
 
 Pies cuadrados del segundo piso
 
 Variable cuantitativa continua
 
-# LowQualFinSF
+### LowQualFinSF
 
 Cantidad de pies cuadrados con acabados de baja calidad
 
 Variable cuantitativa continua
 
-# GrLivArea
+### GrLivArea
 
 Cantidad de pies cuadrados de vivienda sobre la superficie
 
 Variable cuantitativa continua
 
-# BsmtFullBath
+### BsmtFullBath
 
 Cantidad de baños completos en el sótano
 
 Variable cuantitativa discreta
 
-# BsmtHalfBath
+### BsmtHalfBath
 
 Cantidad de medios baños en el sótano
 
 Variable cuantitativa discreta
 
-# FullBath
+### FullBath
 
 Cantidad de baños completos sobre la superficie
 
 Variable cuantitativa discreta
 
-# HalfBath
+### HalfBath
 
 Cantidad de medios baños sobre la superficie
 
 Variable cuantitativa discreta
 
-# Bedroom
+### Bedroom
 
 Cantidad de dormitorios sobre la superficie (no incluye dormitorios en el sótano)
 
 Variable cuantitativa discreta
 
-# Kitchen
+### Kitchen
 
 Cantidad de cocinas sobre la superficie
 
 Variable cuantitativa discreta
 
-# KitchenQual
+### KitchenQual
 
 Calidad de la cocina
 
 Variable categórica ordinal
        	
-# TotRmsAbvGrd
+### TotRmsAbvGrd
 
 Cantidad de cuartos sobre la superficie (no incluye baños)
 
 Variable cuantitativa discreta
 
-# Functional
+### Functional
 
 Funcionalidad de casas (Se asumen típicas a menos qué la deducción este justificado)
 
 Variable categórica nominal
 
-# Fireplaces
+### Fireplaces
 
 Cantidad de chimeneas
 
 Variable cuantitativa discreta
 
-# FireplaceQu
+### FireplaceQu
 
 Calidad de la chimenea
 
 Variable categórica ordinal
 		
-# GarageType
+### GarageType
 
 Locación del garaje
 
 Variable categórica nominal
 		
-# GarageYrBlt
+### GarageYrBlt
 
 Año en que se construyó el garaje
 
 Variable categórica ordinal
 		
-# GarageFinish
+### GarageFinish
 
 Acabados interiores del garaje
 
 Variable categórica ordinal
 		
-# GarageCars
+### GarageCars
 
 Tamaño del garaje en capacidad de carros
 
 Variable cuantitativa discreta
 
-# GarageArea
+### GarageArea
 
 Tamaño del garaje en pies cuadrados
 
 Variable cuantitativa continua
 
-# GarageQual
+### GarageQual
 
 Calidad del garaje 
 
 Variable categórica ordinal
 		
-# GarageCond
+### GarageCond
 
 Condiciones del garaje
 
 Variable categórica ordinal
 		
-# PavedDrive
+### PavedDrive
 
 Pavimento de la entrada
 
 Variable categórica nominal
 		
-# WoodDeckSF
+### WoodDeckSF
 
 Área del deck de madera en pies cuadrados
 
 Variable cuantitativa continua
 
-# OpenPorchSF
+### OpenPorchSF
 
 Área abierta del porche en pies cuadrados
 
 Variable cuantitativa continua
 
-# EnclosedPorch
+### EnclosedPorch
 
 Área cerrada del porche en pies cuadrados
 
 Variable cuantitativa continua
 
-# 3SsnPorch
+### 3SsnPorch
 
 Área de 3 temporadas del porche en pies cuadrados
 
 Variable cuantitativa continua
 
-# ScreenPorch
+### ScreenPorch
 
 Área de pantalla del porche en pies cuadrados
 
 Variable cuantitativa continua
 
-# PoolArea
+### PoolArea
 
 Área de piscina en pies cuadrados
 
 Variable cuantitativa continua
 
-# PoolQC
+### PoolQC
 
 Calidad de la piscina 
 
 Variable categórica ordinal
 
-# Fence
+### Fence
 
 Calidad de la cerca
 
 Variable categórica ordinal
 	
-# MiscFeature
+### MiscFeature
 
 Otras características no cubiertas en otra categoría 
 
 Variable categórica nominal
 		
-# MiscVal
+### MiscVal
 
 Valor de las otras características
 
 Variable categórica nominal
 
-# MoSold
+### MoSold
 
 Mes en que se vendio
 
 Variable categórica ordinal
 
-# YrSold
+### YrSold
 
 Año en que se vendio
 
 Variable categórica ordinal
 
-# SaleType
+### SaleType
 
 Tipo de venta
 
 Variable categórica nominal
 	
-# SaleCondition
+### SaleCondition
 
 Condiciones de venta
 
